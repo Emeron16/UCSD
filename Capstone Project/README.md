@@ -1,11 +1,125 @@
-The repository contains datasets for hand gestures. 
+# HandGesture: Real-Time Hand Gesture Recognition with AI 🤖✋
 
-Background:
-Hand gestures can serve as intuitive and efficient remote commands for controlling various devices and systems, especially in environments where physical touch is impractical or impossible. By developing accurate gesture recognition models, this project aims to enhance accessibility and efficiency in controlling devices such as smart TVs, virtual reality interfaces, or industrial machinery. Solving this problem could help revolutionize user interfaces, making technology more accessible to individuals with disabilities and improving user experience across various interactive platforms.
 
-Purpose: The dataset will be used to train an algorithm to recognize the commands given by hand gestures.
 
-Below are the links to dataset collected:
-Train: https://www.kaggle.com/datasets/abhishek14398/gesture-recognition-dataset?select=train (Uploaded to this repository)
-HaGRID: https://www.kaggle.com/datasets/innominate817/hagrid-classification-512p
+## 📝 Project Background
+Hand gestures can serve as intuitive and efficient remote commands for controlling various devices and systems, especially in environments where physical touch is impractical or impossible. By developing accurate gesture recognition models, this project aims to enhance accessibility and efficiency in controlling devices such as smart TVs, virtual reality interfaces, or industrial machinery. Solving this problem could help revolutionize user interfaces, making technology more accessible to individuals with disabilities and improving user experience across various interactive platforms. 
+
+## ⿻ Description
+Using TensorFlow for model inference, OpenCV for image preprocessing, and ngrok for public URL access, this application allows users to upload or capture hand gestures, which are classified into predefined categories like 'Dislike', 'Like', 'Mute', 'OK', and 'Stop'. The project demonstrates the integration of AI, web technologies, and real-time image processing for gesture-based applications.
+
+## 🎥 Demo
+Check out the demo of HandGesture in action below!
+
+[[Demo Video Link]](https://youtu.be/UhcRvGbow0s)
+
+In the demo, you can see the model accurately classifying hand gestures in real-time.
+
+## ✨ Features
+- 🚀 **Real-time hand gesture recognition**
+- 🖼️ **Image upload and webcam capture support**
+- 🔄 **Integrated ngrok for public URL access**
+- 🖥️ **Flask-based web interface**
+- 🎯 **High accuracy with a pre-trained TensorFlow model**
+- 📊 **Displays predictions with labeled images**
+
+## ⚙️ Installation
+
+Follow the steps below to set up and run the project on your local machine.
+
+### 📦 Prerequisites
+
+1. Ensure you have Python installed (>= 3.8).
+2. Install the necessary libraries by running:
+
+   ```bash
+   pip install Flask tensorflow pyngrok flasgger flask-cors opencv-python
+   ```
+3. Download the HaGrid dataset: https://www.kaggle.com/datasets/innominate817/hagrid-classification-512p
+   
+### 🛠️ Cloning the Repository
+
+Clone the repository to your local machine:
+
+```bash
+git clone https://github.com/your-username/HandGesture.git
+cd HandGesture
+```
+
+### ▶️ Running the Project
+
+Once installed, you can run the project in two phases:
+
+---
+
+## 🛠️ **Phase 1: Model Training and Setup**
+
+In this phase, you will train or load the pre-trained TensorFlow model, preprocess the data, and ensure it works as expected.
+
+### Step 1: Data Preparation
+- Organize your gesture images into separate folders corresponding to each gesture class ('Dislike', 'Like', 'Mute', 'OK', 'Stop').
+
+### Step 2: Model Training or Loading
+- If you have the pre-trained model, ensure it's in the project folder as `HagridModel1.keras`.
+- Otherwise, train the model on the prepared dataset using MobileNet for feature extraction and CNN layers for classification.
+
+### Step 3: Saving the Model
+- After training, save the model as:
+
+  ```python
+  model.save('HagridModel1.keras')
+  ```
+
+## 🚀 **Phase 2: Deploying the Model**
+
+Once the model is trained and saved, the deployment process can begin using the Flask web application.
+
+### Step 1: Set Up the Environment
+
+- Ensure that your project directory is structured as follows:
+
+  ```
+  HandGestureRecognition/
+  ├── templates/
+  │   └── handgestureIndex.html   # HTML template for uploading and viewing results
+  ├── FlaskDeploymentHandGesture.py  # Flask app for model deployment
+  ├── HagridModel1.keras  # Pre-trained model
+  └── static/   # Optional: static files (e.g., CSS, JavaScript)
+  ```
+
+### Step 2: Run the Flask Application
+
+- Start the Flask app with:
+
+  ```bash
+  python FlaskDeploymentHandGesture.py
+  ```
+
+  This will start the local server and open an ngrok tunnel, providing you with a public URL to access the app.
+
+### Step 3: Access the Application
+
+- After running the script, a public URL will be generated by ngrok and printed in the terminal:
+
+  ```
+  * ngrok tunnel "http://<ngrok_url>" -> "http://127.0.0.1:5001"
+  ```
+
+  Open this URL in your browser to interact with the web interface for uploading images or capturing gestures through your webcam.
+
+## 🚀 Usage
+
+### 📸 Image Upload or Webcam Capture
+- **Upload**: Use the file upload feature to submit an image for prediction.
+- **Webcam Capture**: Capture real-time gestures via webcam and see the model's predictions.
+
+### 🧠 How It Works
+1. **Preprocessing**: Images are preprocessed by resizing them to 224x224 and applying MobileNet's preprocessing function.
+2. **Model Inference**: The pre-trained model classifies the image into one of the five categories.
+3. **Visualization**: The prediction is displayed along with the processed image on the web interface.
+
+## 🔮 Future Improvements
+- 🧩 **Expand gesture classes**: Add more hand gesture types for broader recognition.
+- 🎥 **Real-time video processing**: Extend the application to process continuous hand gestures in real-time video feeds.
+- 🖥️ **Enhanced UI**: Improve the interface for a more seamless user experience.
 
