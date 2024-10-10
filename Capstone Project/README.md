@@ -1,7 +1,6 @@
 # HandGesture: Real-Time Hand Gesture Recognition with AI 🤖✋
 
 
-
 ## 📝 Project Background
 Hand gestures can serve as intuitive and efficient remote commands for controlling various devices and systems, especially in environments where physical touch is impractical or impossible. By developing accurate gesture recognition models, this project aims to enhance accessibility and efficiency in controlling devices such as smart TVs, virtual reality interfaces, or industrial machinery. Solving this problem could help revolutionize user interfaces, making technology more accessible to individuals with disabilities and improving user experience across various interactive platforms. 
 
@@ -10,7 +9,6 @@ Using TensorFlow for model inference, OpenCV for image preprocessing, and ngrok 
 
 ## 🎥 Demo
 Check out the demo of HandGesture in action below!
-
 [[Demo Video Link]](https://youtu.be/UhcRvGbow0s)
 
 In the demo, you can see the model accurately classifying hand gestures in real-time.
@@ -42,7 +40,8 @@ Follow the steps below to set up and run the project on your local machine.
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/HandGesture.git
+git clone https://github.com/Emeron16/UCSD.git
+
 cd HandGesture
 ```
 
