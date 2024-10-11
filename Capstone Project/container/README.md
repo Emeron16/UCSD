@@ -1,124 +1,106 @@
-# HandGesture: Real-Time Hand Gesture Recognition with AI 🤖✋
+# Hand Gesture Detection Flask App
+
+This folder contains the containerizes files needed to containerize the application using Docker. Here are the instruction to containerize the application
+
+## 🛠 Installation
+
+1. **Install Docker on your local machine**
+   - Download and install Docker from [here](https://www.docker.com/products/docker-desktop/).
+
+2. **Create a Dockerfile**
+   - Use VI (or any text editor) in Terminal to create a `Dockerfile`.
+   - Copy and paste the following code into the `Dockerfile`.
+
+   ```dockerfile
+   # Use an official Python runtime as a base image
+   FROM python:3.9-slim
+
+   # Install required system packages for OpenCV and GLib
+   RUN apt-get update && apt-get install -y \
+       libgl1-mesa-glx \
+       libglib2.0-0 \
+       && apt-get clean \
+       && rm -rf /var/lib/apt/lists/*
+
+   # Install dependencies for downloading ngrok
+   RUN apt-get update && apt-get install -y \
+       wget \
+       unzip \
+       curl
+
+   # Set the working directory inside the container
+   WORKDIR /app
+
+   # Copy the requirements.txt file to the container
+   COPY requirements.txt /app/
+
+   # Install any Python dependencies
+   RUN pip install --no-cache-dir -r requirements.txt
+
+   # Copy the entire project to the container
+   COPY . /app/
+
+   # Expose port 5001 (default for Flask) and 4040 (for Ngrok)
+   EXPOSE 5001
+   EXPOSE 4040
+
+   # Set environment variables
+   ENV FLASK_APP=FlaskDeploymentHandGesture.py
+   ENV FLASK_RUN_HOST=0.0.0.0
+
+   # Entrypoint command
+   CMD ["flask", "run", "--no-reload", "--host=0.0.0.0", "--port=5001"]
 
 
-## 📝 Project Background
-Hand gestures can serve as intuitive and efficient remote commands for controlling various devices and systems, especially in environments where physical touch is impractical or impossible. By developing accurate gesture recognition models, this project aims to enhance accessibility and efficiency in controlling devices such as smart TVs, virtual reality interfaces, or industrial machinery. Solving this problem could help revolutionize user interfaces, making technology more accessible to individuals with disabilities and improving user experience across various interactive platforms. 
+3. **Create `requirements.txt`**
+   - In the project directory, create a `requirements.txt` file with the following contents:
 
-## ⿻ Description
-Using TensorFlow for model inference, OpenCV for image preprocessing, and ngrok for public URL access, this application allows users to upload or capture hand gestures, which are classified into predefined categories like 'Dislike', 'Like', 'Mute', 'OK', and 'Stop'. The project demonstrates the integration of AI, web technologies, and real-time image processing for gesture-based applications.
+   ```text
+   Flask==3.0.3
+   Flask-Cors==5.0.0
+   flasgger==0.9.7.1
+   numpy==1.26.4
+   opencv-python==4.10.0.84
+   matplotlib==3.8.0
+   tensorflow==2.16.2
+   pyngrok==7.2.0
+   ```
 
-## 🎥 Demo
-Check out the demo of HandGesture in action below!
-[[Demo Video Link]](https://youtu.be/UhcRvGbow0s)
+## 🚀 Build and Run the Docker Image
 
-In the demo, you can see the model accurately classifying hand gestures in real-time.
+4. **Build the Docker Image**
 
-## ✨ Features
-- 🚀 **Real-time hand gesture recognition**
-- 🖼️ **Image upload and webcam capture support**
-- 🔄 **Integrated ngrok for public URL access**
-- 🖥️ **Flask-based web interface**
-- 🎯 **High accuracy with a pre-trained TensorFlow model**
-- 📊 **Displays predictions with labeled images**
-
-## ⚙️ Installation
-
-Follow the steps below to set up and run the project on your local machine.
-
-### 📦 Prerequisites
-
-1. Ensure you have Python installed (>= 3.8).
-2. Install the necessary libraries by running:
+   To build the image, navigate to the project directory and run the following command:
 
    ```bash
-   pip install Flask tensorflow pyngrok flasgger flask-cors opencv-python
+   docker build -t my-flask-app .
    ```
-3. Download the HaGrid dataset: https://www.kaggle.com/datasets/innominate817/hagrid-classification-512p
-   
-### 🛠️ Cloning the Repository
 
-Clone the repository to your local machine:
+5. **Run the Docker Image**
 
-```bash
-git clone https://github.com/Emeron16/UCSD.git
+   After the image is built, run the container with:
 
-cd HandGesture
-```
+   ```bash
+   docker run -d -p 5001:5001 my-flask-app
+   ```
 
-### ▶️ Running the Project
+6. **Access the Ngrok URL**
 
-Once installed, you can run the project in two phases:
+   To retrieve the Ngrok URL, navigate to [http://localhost:4040](http://localhost:4040), then:
 
----
+   - Go to the headers section.
+   - Find the URL under `Access-Control-Allow-Origin`.
 
-## 🛠️ **Phase 1: Model Training and Setup**
+## 📂 Saving and Managing Images(Optional)
 
-In this phase, you will train or load the pre-trained TensorFlow model, preprocess the data, and ensure it works as expected.
+7. **Add a path for saved images**
 
-### Step 1: Data Preparation
-- Organize your gesture images into separate folders corresponding to each gesture class ('Dislike', 'Like', 'Mute', 'OK', 'Stop').
+   To specify where images should be saved, do the following:
+   - In Docker Desktop, navigate to the container and click `Run`.
+   - In the host path, add the path where you want to save the images.
+   - In the container path, set `/app/GeneratedImages`.
 
-### Step 2: Model Training or Loading
-- If you have the pre-trained model, ensure it's in the project folder as `HagridModel1.keras`.
-- Otherwise, train the model on the prepared dataset using MobileNet for feature extraction and CNN layers for classification.
 
-### Step 3: Saving the Model
-- After training, save the model as:
 
-  ```python
-  model.save('HagridModel1.keras')
-  ```
-
-## 🚀 **Phase 2: Deploying the Model**
-
-Once the model is trained and saved, the deployment process can begin using the Flask web application.
-
-### Step 1: Set Up the Environment
-
-- Ensure that your project directory is structured as follows:
-
-  ```
-  HandGestureRecognition/
-  ├── templates/
-  │   └── handgestureIndex.html   # HTML template for uploading and viewing results
-  ├── FlaskDeploymentHandGesture.py  # Flask app for model deployment
-  ├── HagridModel1.keras  # Pre-trained model
-  └── static/   # Optional: static files (e.g., CSS, JavaScript)
-  ```
-
-### Step 2: Run the Flask Application
-
-- Start the Flask app with:
-
-  ```bash
-  python FlaskDeploymentHandGesture.py
-  ```
-
-  This will start the local server and open an ngrok tunnel, providing you with a public URL to access the app.
-
-### Step 3: Access the Application
-
-- After running the script, a public URL will be generated by ngrok and printed in the terminal:
-
-  ```
-  * ngrok tunnel "http://<ngrok_url>" -> "http://127.0.0.1:5001"
-  ```
-
-  Open this URL in your browser to interact with the web interface for uploading images or capturing gestures through your webcam.
-
-## 🚀 Usage
-
-### 📸 Image Upload or Webcam Capture
-- **Upload**: Use the file upload feature to submit an image for prediction.
-- **Webcam Capture**: Capture real-time gestures via webcam and see the model's predictions.
-
-### 🧠 How It Works
-1. **Preprocessing**: Images are preprocessed by resizing them to 224x224 and applying MobileNet's preprocessing function.
-2. **Model Inference**: The pre-trained model classifies the image into one of the five categories.
-3. **Visualization**: The prediction is displayed along with the processed image on the web interface.
-
-## 🔮 Future Improvements
-- 🧩 **Expand gesture classes**: Add more hand gesture types for broader recognition.
-- 🎥 **Real-time video processing**: Extend the application to process continuous hand gestures in real-time video feeds.
-- 🖥️ **Enhanced UI**: Improve the interface for a more seamless user experience.
+By following these steps, you should have your Flask-based hand gesture detection application running in a Docker container.
 
